@@ -1,5 +1,6 @@
 {
   "name": "sport-de-raquettes",
+  "type": "module",
   "version": "1.0.0",
   "description": "Application de gestion des sports de raquettes pour les élèves",
   "private": true,
