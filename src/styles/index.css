@@ -9,7 +9,6 @@
   }
 }
 
-/* iPad tactile optimizations */
 @layer utilities {
   .touch-button {
     @apply p-4 rounded-lg active:scale-95 transition-transform;
