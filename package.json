@@ -2,19 +2,14 @@
   "name": "sport-de-raquettes",
   "type": "module",
   "version": "1.0.0",
-  "description": "Application de gestion des sports de raquettes pour les élèves",
+  "description": "Application de gestion des sports de raquettes",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "uuid": "^9.0.0",
-    "dexie": "^3.2.5"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.18",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
     "vite": "^5.0.10"
   },
   "scripts": {
