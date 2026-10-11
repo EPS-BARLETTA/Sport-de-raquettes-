@@ -143,6 +143,20 @@ const App = () => {
     }
   };
 
+  // Fonction pour générer la classe CSS des onglets
+  const getTabClass = (tabName) => {
+    const baseClass = 'px-6 py-3 rounded-lg font-medium transition-all';
+    const activeClass = activeTab === tabName ? 'bg-primary-600 text-white' : 'text-gray-600 hover:bg-gray-100';
+    return `${baseClass} ${activeClass}`;
+  };
+
+  // Fonction pour générer la classe CSS des cartes de classe
+  const getClasseCardClass = (isSelected) => {
+    const baseClass = 'p-4 rounded-xl border-2 cursor-pointer transition-all';
+    const selectedClass = isSelected ? 'border-primary-500 bg-primary-50' : 'border-gray-200 bg-white hover:border-gray-300';
+    return `${baseClass} ${selectedClass}`;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
@@ -157,31 +171,13 @@ const App = () => {
 
         <nav className="flex justify-center mb-6">
           <div className="inline-flex rounded-xl bg-white p-1 shadow-md">
-            <button
-              onClick={() => setActiveTab('classes')}
-              className={`px-6 py-3 rounded-lg font-medium transition-all $
-                {`}
-                  ${activeTab === 'classes' ? 'bg-primary-600 text-white' : 'text-gray-600 hover:bg-gray-100'}
-                `}
-              >
+            <button onClick={() => setActiveTab('classes')} className={getTabClass('classes')}>
               Mes Classes
             </button>
-            <button
-              onClick={() => setActiveTab('montée-descente')}
-              className={`px-6 py-3 rounded-lg font-medium transition-all $
-                {`}
-                  ${activeTab === 'montée-descente' ? 'bg-primary-600 text-white' : 'text-gray-600 hover:bg-gray-100'}
-                `}
-              >
+            <button onClick={() => setActiveTab('montée-descente')} className={getTabClass('montée-descente')}>
               Montée-Descente
             </button>
-            <button
-              onClick={() => setActiveTab('poules')}
-              className={`px-6 py-3 rounded-lg font-medium transition-all $
-                {`}
-                  ${activeTab === 'poules' ? 'bg-primary-600 text-white' : 'text-gray-600 hover:bg-gray-100'}
-                `}
-              >
+            <button onClick={() => setActiveTab('poules')} className={getTabClass('poules')}>
               Poules
             </button>
           </div>
@@ -191,23 +187,13 @@ const App = () => {
           {activeTab === 'classes' && (
             <div>
               <div className="flex flex-wrap gap-3 mb-6">
-                <TouchButton
-                  onClick={() => {
-                    setEditingClasse(null);
-                    setShowClasseModal(true);
-                  }}
-                  className="bg-primary-600 text-white"
-                >
+                <TouchButton onClick={() => { setEditingClasse(null); setShowClasseModal(true); }} className="bg-primary-600 text-white">
                   + Ajouter une classe
                 </TouchButton>
                 
                 <div className="ml-auto flex items-center gap-3">
                   <span className="text-sm text-gray-600">Terme actuel:</span>
-                  <select
-                    value={terme}
-                    onChange={(e) => changeTerme(e.target.value)}
-                    className="p-2 border rounded-lg"
-                  >
+                  <select value={terme} onChange={(e) => changeTerme(e.target.value)} className="p-2 border rounded-lg">
                     <option value="terrain">Terrain</option>
                     <option value="table">Table</option>
                   </select>
@@ -216,14 +202,7 @@ const App = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {classes.map((classe) => (
-                  <div
-                    key={classe.id}
-                    onClick={() => selectClasse(classe)}
-                    className={`p-4 rounded-xl border-2 cursor-pointer transition-all $
-                      {`}
-                        ${selectedClasse?.id === classe.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200 bg-white hover:border-gray-300'}
-                      `}
-                    >
+                  <div key={classe.id} onClick={() => selectClasse(classe)} className={getClasseCardClass(selectedClasse?.id === classe.id)}>
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-bold text-lg text-gray-800">{classe.nom}</h3>
@@ -232,25 +211,10 @@ const App = () => {
                         </p>
                       </div>
                       <div className="flex gap-2">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setEditingClasse(classe);
-                            setShowClasseModal(true);
-                          }}
-                          className="text-blue-500 hover:text-blue-700"
-                          title="Modifier"
-                        >
+                        <button onClick={(e) => { e.stopPropagation(); setEditingClasse(classe); setShowClasseModal(true); }} className="text-blue-500 hover:text-blue-700" title="Modifier">
                           ✏️
                         </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteClasse(classe.id);
-                          }}
-                          className="text-red-500 hover:text-red-700"
-                          title="Supprimer"
-                        >
+                        <button onClick={(e) => { e.stopPropagation(); deleteClasse(classe.id); }} className="text-red-500 hover:text-red-700" title="Supprimer">
                           🗑️
                         </button>
                       </div>
@@ -262,49 +226,22 @@ const App = () => {
               {selectedClasse && (
                 <div className="border-t pt-6">
                   <div className="flex flex-wrap gap-3 justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      Élèves de {selectedClasse.nom}
-                    </h2>
+                    <h2 className="text-xl font-semibold text-gray-800">Élèves de {selectedClasse.nom}</h2>
                     <div className="flex gap-3">
-                      <TouchButton
-                        onClick={() => {
-                          setEditingEleve(null);
-                          setShowEleveModal(true);
-                        }}
-                        className="bg-green-600 text-white"
-                      >
+                      <TouchButton onClick={() => { setEditingEleve(null); setShowEleveModal(true); }} className="bg-green-600 text-white">
                         + Ajouter un élève
                       </TouchButton>
-                      <TouchButton
-                        onClick={() => {
-                          const text = window.prompt('Collez la liste des élèves (1 par ligne) :');
-                          if (text) pasteEleves(text);
-                        }}
-                        className="bg-purple-600 text-white"
-                      >
+                      <TouchButton onClick={() => { const text = window.prompt('Collez la liste des élèves (1 par ligne) :'); if (text) pasteEleves(text); }} className="bg-purple-600 text-white">
                         Coller une liste
                       </TouchButton>
                     </div>
                   </div>
 
-                  <div
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                    onPaste={handlePaste}
-                  >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" onPaste={handlePaste}>
                     {eleves.map((eleve) => (
                       <div key={eleve.id} className="flex flex-col gap-2">
-                        <EleveCard
-                          eleve={eleve}
-                          onClick={() => {
-                            setEditingEleve(eleve);
-                            setShowEleveModal(true);
-                          }}
-                          terme={terme}
-                        />
-                        <TouchButton
-                          onClick={() => deleteEleve(eleve.id)}
-                          className="bg-red-100 text-red-600 text-xs"
-                        >
+                        <EleveCard eleve={eleve} onClick={() => { setEditingEleve(eleve); setShowEleveModal(true); }} terme={terme} />
+                        <TouchButton onClick={() => deleteEleve(eleve.id)} className="bg-red-100 text-red-600 text-xs">
                           Supprimer
                         </TouchButton>
                       </div>
@@ -312,9 +249,7 @@ const App = () => {
                   </div>
                   
                   {eleves.length === 0 && (
-                    <p className="text-gray-500 text-center py-8">
-                      Aucune élève dans cette classe. Ajoutez-en un(e) !
-                    </p>
+                    <p className="text-gray-500 text-center py-8">Aucune élève dans cette classe. Ajoutez-en un(e) !</p>
                   )}
                 </div>
               )}
@@ -324,43 +259,20 @@ const App = () => {
           {activeTab === 'montée-descente' && (
             <div className="text-center text-gray-500 py-8">
               <p>Module Montée-Descente en cours de développement...</p>
-              <p className="mt-2">
-                Sélectionnez une classe dans l'onglet "Mes Classes" pour commencer.
-              </p>
+              <p className="mt-2">Sélectionnez une classe dans l'onglet "Mes Classes" pour commencer.</p>
             </div>
           )}
 
           {activeTab === 'poules' && (
             <div className="text-center text-gray-500 py-8">
               <p>Module Poules en cours de développement...</p>
-              <p className="mt-2">
-                Les poules seront générées automatiquement après la phase de Montée-Descente.
-              </p>
+              <p className="mt-2">Les poules seront générées automatiquement après la phase de Montée-Descente.</p>
             </div>
           )}
         </main>
 
-        <ClasseModal
-          isOpen={showClasseModal}
-          onClose={() => {
-            setShowClasseModal(false);
-            setEditingClasse(null);
-          }}
-          classe={editingClasse}
-          onSave={saveClasse}
-        />
-
-        <EleveModal
-          isOpen={showEleveModal}
-          onClose={() => {
-            setShowEleveModal(false);
-            setEditingEleve(null);
-          }}
-          eleve={editingEleve}
-          classeId={selectedClasse?.id}
-          onSave={saveEleve}
-          terme={terme}
-        />
+        <ClasseModal isOpen={showClasseModal} onClose={() => { setShowClasseModal(false); setEditingClasse(null); }} classe={editingClasse} onSave={saveClasse} />
+        <EleveModal isOpen={showEleveModal} onClose={() => { setShowEleveModal(false); setEditingEleve(null); }} eleve={editingEleve} classeId={selectedClasse?.id} onSave={saveEleve} terme={terme} />
       </div>
     </div>
   );
